@@ -1,0 +1,87 @@
+﻿@model IEnumerable<DonetClient.Models.Course>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.courseName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.duration)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.topicId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.topicName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.courseName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.duration)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.topicId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.topicName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    <a class="delete-btn" data-id="@item.id">Delete</a>
+                </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    let deleteElms = document.querySelectorAll(".delete-btn");
+
+    deleteElms.forEach((elm) => {
+        elm.addEventListener('click', function () {
+            let result = confirm("Are you sure to delete?");
+            if (result) {
+                let id = elm.getAttribute('data-id');
+                fetch(`/course/Delete/${id}`, { method: "Delete" }).then((res) => { return res.json() })
+                    .then((res) => {
+                        if (res) {
+
+                            elm.parentElement.parentElement.remove();
+                        }
+                        else
+                            alert("faild");
+                    }).catch(err => console.log(err))
+            }
+        })
+    })
+</script>

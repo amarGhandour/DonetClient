@@ -1,0 +1,91 @@
+﻿
+
+<h1>Create</h1>
+
+<h4>Course</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form id="create-course">
+
+            <div class="form-group">
+                <label for="courseName" class="control-label">course name</label>
+                <input name="courseName" id="courseName" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="duration" class="control-label">duration</label>
+                <input name="duration" id="duration" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="description" class="control-label">description</label>
+                <input name="description" id="description" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="topicId" class="control-label">topics</label>
+                <select name="topicId" id="topicId" class="form-control" ></select>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    window.addEventListener("DOMContentLoaded", function(){
+        fetch("http://localhost:8088/api/topic")
+        .then(res => res.json())
+        .then((res) => {
+          let topicSelectElm = document.querySelector("#topicId");
+
+            if (res.length > 0){
+                res.forEach((elm) => {
+                        let optionElm = document.createElement("option");
+                        optionElm.value = elm.id;
+                        optionElm.innerHTML = elm.title;
+
+                        topicSelectElm.append(optionElm);
+                });
+            }
+        });
+
+        let createFormElm = document.getElementById("create-course");
+
+        createFormElm.addEventListener("submit", function(e){
+            e.preventDefault();
+
+            let jsonDataObj = {};
+            jsonDataObj.courseName = document.querySelector("input[name='courseName']").value;
+            jsonDataObj.description = document.querySelector("input[name='description']").value;
+            jsonDataObj.duration = document.querySelector("input[name='duration']").value;
+            jsonDataObj.topicId = document.querySelector("#topicId").value;
+
+            console.log(jsonDataObj);
+
+            fetch("http://localhost:8088/api/course", {
+                method: "Post", body: JSON.stringify(jsonDataObj), headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(res => res.json())
+            .then(res => {
+                    window.location.replace("https://localhost:7230/Course");
+
+            });
+
+        });
+
+    })
+</script>

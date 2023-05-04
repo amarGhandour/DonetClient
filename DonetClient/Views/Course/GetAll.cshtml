@@ -1,0 +1,66 @@
+﻿<table class="table">
+<thead>
+        <tr>
+            <th>
+                id
+            </th>
+            <th>
+                course name
+            </th>
+            <th>
+                duration
+            </th>
+            <th>
+                description
+            </th>
+            <th>
+                topic name
+            </th>
+        </tr>
+</thead>
+<tbody>
+
+</tbody>
+</table>
+
+
+
+<script type="text/javascript">
+    window.addEventListener("DOMContentLoaded", function(){
+        fetch("http://localhost:8088/api/course")
+        .then(res => res.json())
+        .then((res) => {
+          let tableBodyElm = document.querySelector("table tbody");
+
+            if (res.length > 0){
+                res.forEach((elm) => {
+                        let trElm = document.createElement("tr");
+
+                        let idTdElm = document.createElement("td");
+                        idTdElm.innerText = elm.id;
+                        trElm.append(idTdElm);
+
+
+                        let courseName = document.createElement("td");
+                        courseName.innerText = elm.courseName;
+                        trElm.append(courseName);
+
+                        let duration = document.createElement("td");
+                        duration.innerText = elm.duration;
+                        trElm.append(duration);
+
+                        let description = document.createElement("td");
+                        description.innerText = elm.description;
+                        trElm.append(description);
+
+                        let topicName = document.createElement("td");
+                        topicName.innerText = elm.topicName;
+                        trElm.append(topicName);
+
+
+                 tableBodyElm.append(trElm);
+                })
+            }
+        });
+    })
+</script>
